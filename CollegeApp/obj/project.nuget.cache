@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rjL6bzWV7HtgQzbCQLhOwLjxl4tI9vILvLnuP9XgjBMRlmOxipkMY+AbtLxfRWYJ8373KVl5GkX5NFIeCXyPqw==",
+  "dgSpecHash": "urpWkHK71Gvd5m3gLfYVpFo8khRPp6VPWKQ8C956Nx2r0ZUZHxSBJWR/qlVnwD+2ae4RX2Ktya0gmd6t7zhPZg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\hsn37\\source\\repos\\CollegeApp\\CollegeApp\\CollegeApp.csproj",
+  "projectFilePath": "D:\\Own_Learning\\Web_API\\College_WebAPI\\CollegeApp\\CollegeApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hsn37\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\hsn37\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

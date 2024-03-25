@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hsn37\\source\\repos\\CollegeApp\\CollegeApp\\CollegeApp.csproj": {}
+    "D:\\Own_Learning\\Web_API\\College_WebAPI\\CollegeApp\\CollegeApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hsn37\\source\\repos\\CollegeApp\\CollegeApp\\CollegeApp.csproj": {
+    "D:\\Own_Learning\\Web_API\\College_WebAPI\\CollegeApp\\CollegeApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hsn37\\source\\repos\\CollegeApp\\CollegeApp\\CollegeApp.csproj",
+        "projectUniqueName": "D:\\Own_Learning\\Web_API\\College_WebAPI\\CollegeApp\\CollegeApp.csproj",
         "projectName": "CollegeApp",
-        "projectPath": "C:\\Users\\hsn37\\source\\repos\\CollegeApp\\CollegeApp\\CollegeApp.csproj",
+        "projectPath": "D:\\Own_Learning\\Web_API\\College_WebAPI\\CollegeApp\\CollegeApp.csproj",
         "packagesPath": "C:\\Users\\hsn37\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hsn37\\source\\repos\\CollegeApp\\CollegeApp\\obj\\",
+        "outputPath": "D:\\Own_Learning\\Web_API\\College_WebAPI\\CollegeApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hsn37\\AppData\\Roaming\\NuGet\\NuGet.Config",
