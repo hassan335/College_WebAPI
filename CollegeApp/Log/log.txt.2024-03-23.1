@@ -1,0 +1,16 @@
+2024-03-23 01:10:37,631 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Connection - Opened connection to database 'CollegeDb' on server 'DESKTOP-LDJT2T6\SQLEXPRESS'.
+2024-03-23 01:10:37,648 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Creating DbCommand for 'ExecuteReader'.
+2024-03-23 01:10:37,651 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Created DbCommand for 'ExecuteReader' (3ms).
+2024-03-23 01:10:37,655 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Initialized DbCommand for 'ExecuteReader' (7ms).
+2024-03-23 01:10:37,659 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Executing DbCommand [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Size = 250)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Students] SET [Name] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+2024-03-23 01:10:37,671 [.NET TP Worker] INFO  Microsoft.EntityFrameworkCore.Database.Command - Executed DbCommand (12ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Size = 250)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Students] SET [Name] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;

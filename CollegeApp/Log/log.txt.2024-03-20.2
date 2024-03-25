@@ -1,0 +1,19 @@
+2024-03-20 02:12:10,007 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Creating DbCommand for 'ExecuteNonQuery'.
+2024-03-20 02:12:10,010 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Created DbCommand for 'ExecuteNonQuery' (3ms).
+2024-03-20 02:12:10,011 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Initialized DbCommand for 'ExecuteNonQuery' (3ms).
+2024-03-20 02:12:10,011 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Executing DbCommand [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @var2 sysname;
+SELECT @var2 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Students]') AND [c].[name] = N'Address');
+IF @var2 IS NOT NULL EXEC(N'ALTER TABLE [Students] DROP CONSTRAINT [' + @var2 + '];');
+ALTER TABLE [Students] ALTER COLUMN [Address] nvarchar(500) NULL;
+2024-03-20 02:12:10,031 [1] INFO  Microsoft.EntityFrameworkCore.Database.Command - Executed DbCommand (20ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+DECLARE @var2 sysname;
+SELECT @var2 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Students]') AND [c].[name] = N'Address');
+IF @var2 IS NOT NULL EXEC(N'ALTER TABLE [Students] DROP CONSTRAINT [' + @var2 + '];');
+ALTER TABLE [Students] ALTER COLUMN [Address] nvarchar(500) NULL;

@@ -1,0 +1,10 @@
+2024-03-19 01:49:04,925 [1] INFO  Microsoft.EntityFrameworkCore.Database.Command - Executed DbCommand (75ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Address', N'DOB', N'Email', N'Name') AND [object_id] = OBJECT_ID(N'[Students]'))
+    SET IDENTITY_INSERT [Students] ON;
+INSERT INTO [Students] ([Id], [Address], [DOB], [Email], [Name])
+VALUES (1, N'NK', '2024-12-12T00:00:00.0000000', N'Hsn@gmail.com', N'Hassan'),
+(2, N'Dastagir', '2024-12-13T00:00:00.0000000', N'Mz@gmail.com', N'Maaz');
+IF EXISTS (SELECT * FROM [sys].[identity_columns] WHERE [name] IN (N'Id', N'Address', N'DOB', N'Email', N'Name') AND [object_id] = OBJECT_ID(N'[Students]'))
+    SET IDENTITY_INSERT [Students] OFF;
+2024-03-19 01:49:04,942 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Creating DbCommand for 'ExecuteNonQuery'.
+2024-03-19 01:49:04,942 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Created DbCommand for 'ExecuteNonQuery' (0ms).

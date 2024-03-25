@@ -1,0 +1,4 @@
+2024-03-24 03:27:31,379 [1] INFO  Microsoft.Hosting.Lifetime - Application started. Press Ctrl+C to shut down.
+2024-03-24 03:27:31,387 [1] INFO  Microsoft.Hosting.Lifetime - Hosting environment: Development
+2024-03-24 03:27:31,389 [1] INFO  Microsoft.Hosting.Lifetime - Content root path: C:\Users\hsn37\source\repos\CollegeApp\CollegeApp
+2024-03-24 03:27:31,391 [1] DEBUG Microsoft.Extensions.Hosting.Internal.Host - Hosting started
