@@ -8,10 +8,7 @@ namespace CollegeApp.Controllers
     public class ValuesController : ControllerBase
     {
 
-        public void OK()
-        {
-            Console.WriteLine("Hello _Github");
-        }
+      
 
 
 

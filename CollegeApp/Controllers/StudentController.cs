@@ -2,6 +2,7 @@
 using CollegeApp.Data;
 using CollegeApp.Models;
 using CollegeApp.MyLogging;
+using CollegeApp.Repository;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,15 +17,22 @@ namespace CollegeApp.Controllers
     {
         private readonly ILogger _logger;
 
-        private readonly CollegeDbContext _db;
+        
 
         private readonly IMapper _mapper;
 
-        public StudentController(ILogger<StudentController> logger, CollegeDbContext dbContext,IMapper mapper)
+        private readonly IStudentRepository _SRepository;
+
+
+
+        public StudentController(ILogger<StudentController> logger,IMapper mapper, IStudentRepository SRepository)
         {
             _logger = logger;
-            _db = dbContext;
+          
             _mapper = mapper;
+
+            _SRepository = SRepository;
+
 
         }
 
@@ -36,21 +44,11 @@ namespace CollegeApp.Controllers
         {
             #region ok_200
 
-            //List<StudentDTO> students = await _db.Students.Select(x => new StudentDTO()
-
-            //{
-
-            //    Id = x.Id,
-            //    Name = x.Name,
-            //    Email = x.Email,
-            //    Address = x.Address,
-            //    DOB = x.DOB
 
 
+            //var students= await _db.Students.ToListAsync();
 
-            //}).ToListAsync();
-
-           var students= await _db.Students.ToListAsync();
+            var students = await _SRepository.GetAllStudentsAsync();
 
             var studentsDTO = _mapper.Map<List<StudentDTO>>(students);
 
@@ -87,27 +85,15 @@ namespace CollegeApp.Controllers
 
                 return BadRequest();
             }
-              
+
             #endregion
 
-            //Student s = CollegeRepository.Students.Where(x => x.Id == id).FirstOrDefault();
-
-            //StudentDTO studentss = await _db.Students.Where(x => x.Id == id).Select(x => new StudentDTO()
-
-            //{
-
-            //    Id = x.Id,
-            //    Name = x.Name,
-            //    Email = x.Email,
-            //    Address = x.Address,
-            //    DOB = x.DOB
 
 
 
-            //}).FirstOrDefaultAsync();
+            //var student1 = await _db.Students.Where(x => x.Id == id).SingleOrDefaultAsync();
 
-
-            var student1 = await _db.Students.Where(x => x.Id == id).SingleOrDefaultAsync();
+            var student1 = await _SRepository.GetStudentByIdAsync(id);
 
             StudentDTO studentss =_mapper.Map<StudentDTO>(student1);
 
@@ -166,7 +152,9 @@ namespace CollegeApp.Controllers
             //}).FirstOrDefaultAsync();
 
 
-            var student1 = await _db.Students.Where(x => x.Name == name).SingleOrDefaultAsync();
+            //var student1 = await _db.Students.Where(x => x.Name == name).SingleOrDefaultAsync();
+
+            var student1 = await _SRepository.GetStudentByNameAsync(name);
 
             StudentDTO studentss = _mapper.Map<StudentDTO>(student1);
 
@@ -209,7 +197,9 @@ namespace CollegeApp.Controllers
             }
             #endregion
 
-            Student s = await _db.Students.Where(x => x.Id == id).FirstOrDefaultAsync();
+            Student s = await _SRepository.GetStudentByIdAsync(id);
+
+            //Student s = await _SRepository.DeleteStudentByIdAsync(id);
 
             #region Not_Found 404
             if (s == null)
@@ -218,10 +208,12 @@ namespace CollegeApp.Controllers
 
             #region Ok_200
 
-            
-            _db.Students.Remove(s);
-            _db.SaveChanges();
-            return Ok(true);
+
+            //_db.Students.Remove(s);
+            //_db.SaveChanges();
+
+
+            return Ok(_SRepository.DeleteStudentByIdAsync(id));
             #endregion
 
 
@@ -237,7 +229,7 @@ namespace CollegeApp.Controllers
 
         [HttpPost("Create", Name = "CreateStudent")]
 
-        public ActionResult<StudentDTO> CreateStudent(StudentDTO sdt)
+        public async Task <ActionResult<StudentDTO>> CreateStudent(StudentDTO sdt)
         {
             #region BadRequest_400
             if (sdt == null)
@@ -246,11 +238,7 @@ namespace CollegeApp.Controllers
                 return BadRequest();
             }
 
-            //if (sdt.AdmissionDate < DateTime.Now.Date)
-            //{
-            //    ModelState.AddModelError("Admission Date Error", "Please Enter valid date");
-            //    return BadRequest(ModelState);
-            //}
+           
             #endregion
 
 
@@ -258,24 +246,17 @@ namespace CollegeApp.Controllers
 
             #region Created_201
 
-            //int Id = CollegeRepository.Students.Select(x => x.Id).LastOrDefault() + 1;
-
-            //Student st = new Student
-            //{
-            //    //Id = Id,
-            //    Name = sdt.Name,
-            //    Address = sdt.Address,
-            //    Email = sdt.Email,
-            //    DOB = sdt.DOB
-            //};
+         
 
 
-            Student st = _mapper.Map<Student>(sdt); 
+            Student st = _mapper.Map<Student>(sdt);
 
-            _db .Students.AddAsync(st);
-            _db.SaveChanges();
+          
 
-            return CreatedAtRoute("GetStudentDataById", new { id = st.Id }, st);
+            sdt.Id = await _SRepository.SaveStudent(st);
+
+
+            return CreatedAtRoute("GetStudentDataById", sdt.Id, sdt);
             #endregion
 
 
@@ -310,7 +291,12 @@ namespace CollegeApp.Controllers
             }
 
             #endregion
-           Student sdt1 = await _db.Students.AsNoTracking().Where(x=>x.Id == sdt.Id).FirstOrDefaultAsync() ;
+            //Student sdt1 = await _db.Students.AsNoTracking().Where(x=>x.Id == sdt.Id).FirstOrDefaultAsync() ;
+
+            Student sdt1 = await _SRepository.GetStudentByIdAsync(sdt.Id,true);
+
+
+
             #region Not_Found_404
             if (sdt1 == null)
                 return NotFound();
@@ -324,7 +310,7 @@ namespace CollegeApp.Controllers
             //sdt1.DOB = sdt.DOB;
 
 
-            var StudentNew = _mapper.Map<Student>(sdt);
+            var StudentNew = _mapper.Map<Student>(sdt1);
 
             //var StudentNew = new Student(){
             //    Id = sdt.Id,
@@ -336,8 +322,15 @@ namespace CollegeApp.Controllers
 
             //};
 
-            _db.Students.Update(StudentNew);
-            _db.SaveChanges();
+            //_db.Students.Update(StudentNew);
+            //_db.SaveChanges();
+
+
+
+            await _SRepository.UpdateStudentAsync(StudentNew);
+
+
+
 
 
 
@@ -371,7 +364,7 @@ namespace CollegeApp.Controllers
 
 
             #endregion
-            Student sdt1 = await _db.Students.AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+            Student sdt1 = await _SRepository.GetStudentByIdAsync(id, true);
             #region Not_Found_404
             if (sdt1 == null)
                 return NotFound();
@@ -382,17 +375,6 @@ namespace CollegeApp.Controllers
             var StudentDTO = _mapper.Map<StudentDTO>(sdt1);
 
 
-
-            //var StudentDTO = new StudentDTO
-            //{
-            //    Id = sdt1.Id,
-            //    Name = sdt1.Name,
-            //    Address = sdt1.Address,
-            //    Email = sdt1.Email,
-            //    DOB =sdt1.DOB
-
-
-            //};
 
 
             patchdocument.ApplyTo(StudentDTO, ModelState);
@@ -413,10 +395,13 @@ namespace CollegeApp.Controllers
             //sdt1.Email = StudentDTO.Email;
             //sdt1.DOB = StudentDTO.DOB;
 
-            _db.Students.Update(sdt1);
-            _db.SaveChangesAsync();
+            //_db.Students.Update(sdt1);
+            //_db.SaveChangesAsync();
 
 
+
+
+            await _SRepository.UpdateStudentAsync(sdt1);
 
             #region NoContent_204
             return NoContent();
