@@ -85,7 +85,7 @@ namespace CollegeApp.Repository
 
         public async  Task<int> UpdateStudentAsync(Student st)
         {
- _db.Update(st);
+                   _db.Update(st);
             await _db.SaveChangesAsync();
 
                 return st.Id;

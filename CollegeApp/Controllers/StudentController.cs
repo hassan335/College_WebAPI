@@ -21,11 +21,11 @@ namespace CollegeApp.Controllers
 
         private readonly IMapper _mapper;
 
-        private readonly IStudentRepository _SRepository;
+        private readonly ICollegeRepository<Student> _SRepository;
 
 
 
-        public StudentController(ILogger<StudentController> logger,IMapper mapper, IStudentRepository SRepository)
+        public StudentController(ILogger<StudentController> logger,IMapper mapper, ICollegeRepository<Student> SRepository)
         {
             _logger = logger;
           
@@ -48,7 +48,7 @@ namespace CollegeApp.Controllers
 
             //var students= await _db.Students.ToListAsync();
 
-            var students = await _SRepository.GetAllStudentsAsync();
+            var students = await _SRepository.GetAllTAsync();
 
             var studentsDTO = _mapper.Map<List<StudentDTO>>(students);
 
@@ -93,7 +93,7 @@ namespace CollegeApp.Controllers
 
             //var student1 = await _db.Students.Where(x => x.Id == id).SingleOrDefaultAsync();
 
-            var student1 = await _SRepository.GetStudentByIdAsync(id);
+            var student1 = await _SRepository.GetTByIdAsync(x=>x.Id ==  id);
 
             StudentDTO studentss =_mapper.Map<StudentDTO>(student1);
 
@@ -154,7 +154,7 @@ namespace CollegeApp.Controllers
 
             //var student1 = await _db.Students.Where(x => x.Name == name).SingleOrDefaultAsync();
 
-            var student1 = await _SRepository.GetStudentByNameAsync(name);
+            var student1 = await _SRepository.GetTByNameAsync(y=>y.Name == name);
 
             StudentDTO studentss = _mapper.Map<StudentDTO>(student1);
 
@@ -197,7 +197,7 @@ namespace CollegeApp.Controllers
             }
             #endregion
 
-            Student s = await _SRepository.GetStudentByIdAsync(id);
+            Student s = await _SRepository.GetTByIdAsync(x => x.Id == id);
 
             //Student s = await _SRepository.DeleteStudentByIdAsync(id);
 
@@ -211,9 +211,9 @@ namespace CollegeApp.Controllers
 
             //_db.Students.Remove(s);
             //_db.SaveChanges();
-
-
-            return Ok(_SRepository.DeleteStudentByIdAsync(id));
+            //bool flag  =  
+             //bool falgg = ;
+            return Ok(await _SRepository.DeleteTByIdAsync(s));
             #endregion
 
 
@@ -253,10 +253,16 @@ namespace CollegeApp.Controllers
 
           
 
-            sdt.Id = await _SRepository.SaveStudent(st);
+             await _SRepository.SaveStudent(st);
+           
+            var student = await _SRepository.GetTByNameAsync(z => z.Name == st.Name);
+            //int id = student.Id;
 
+            //return CreatedAtRoute("GetStudentDataById",id, sdt);
 
-            return CreatedAtRoute("GetStudentDataById", sdt.Id, sdt);
+            StudentDTO st123 = _mapper.Map<StudentDTO>(student);
+
+            return CreatedAtRoute("GetStudentDataById", routeValues: new { id = student.Id }, st123);
             #endregion
 
 
@@ -293,7 +299,7 @@ namespace CollegeApp.Controllers
             #endregion
             //Student sdt1 = await _db.Students.AsNoTracking().Where(x=>x.Id == sdt.Id).FirstOrDefaultAsync() ;
 
-            Student sdt1 = await _SRepository.GetStudentByIdAsync(sdt.Id,true);
+            Student sdt1 = await _SRepository.GetTByIdAsync(x=>x.Id ==  sdt.Id,true);
 
 
 
@@ -310,7 +316,7 @@ namespace CollegeApp.Controllers
             //sdt1.DOB = sdt.DOB;
 
 
-            var StudentNew = _mapper.Map<Student>(sdt1);
+            var StudentNew = _mapper.Map<Student>(sdt);
 
             //var StudentNew = new Student(){
             //    Id = sdt.Id,
@@ -327,7 +333,7 @@ namespace CollegeApp.Controllers
 
 
 
-            await _SRepository.UpdateStudentAsync(StudentNew);
+            await _SRepository.UpdateTAsync(StudentNew);
 
 
 
@@ -364,7 +370,7 @@ namespace CollegeApp.Controllers
 
 
             #endregion
-            Student sdt1 = await _SRepository.GetStudentByIdAsync(id, true);
+            Student sdt1 = await _SRepository.GetTByIdAsync(x=>x.Id==id, true);
             #region Not_Found_404
             if (sdt1 == null)
                 return NotFound();
@@ -401,7 +407,7 @@ namespace CollegeApp.Controllers
 
 
 
-            await _SRepository.UpdateStudentAsync(sdt1);
+            await _SRepository.UpdateTAsync(sdt1);
 
             #region NoContent_204
             return NoContent();

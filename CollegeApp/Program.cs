@@ -39,6 +39,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMyLogger, LogToDB>();
 builder.Services.AddTransient<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped (typeof(ICollegeRepository<>)  , typeof(CollegeRepository<>));
 
 var app = builder.Build();
 
