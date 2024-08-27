@@ -21,11 +21,12 @@ namespace CollegeApp.Controllers
 
         private readonly IMapper _mapper;
 
-        private readonly ICollegeRepository<Student> _SRepository;
+       
+        private readonly IStudentRepository _SRepository;
 
 
 
-        public StudentController(ILogger<StudentController> logger,IMapper mapper, ICollegeRepository<Student> SRepository)
+        public StudentController(ILogger<StudentController> logger,IMapper mapper, IStudentRepository SRepository)
         {
             _logger = logger;
           
@@ -46,7 +47,7 @@ namespace CollegeApp.Controllers
 
 
 
-            //var students= await _db.Students.ToListAsync();
+           
 
             var students = await _SRepository.GetAllTAsync();
 
@@ -93,7 +94,7 @@ namespace CollegeApp.Controllers
 
             //var student1 = await _db.Students.Where(x => x.Id == id).SingleOrDefaultAsync();
 
-            var student1 = await _SRepository.GetTByIdAsync(x=>x.Id ==  id);
+            var student1 = await _SRepository.GetTAsync(x=>x.Id ==  id);
 
             StudentDTO studentss =_mapper.Map<StudentDTO>(student1);
 
@@ -154,7 +155,7 @@ namespace CollegeApp.Controllers
 
             //var student1 = await _db.Students.Where(x => x.Name == name).SingleOrDefaultAsync();
 
-            var student1 = await _SRepository.GetTByNameAsync(y=>y.Name == name);
+            var student1 = await _SRepository.GetTAsync(y=>y.Name == name);
 
             StudentDTO studentss = _mapper.Map<StudentDTO>(student1);
 
@@ -197,7 +198,7 @@ namespace CollegeApp.Controllers
             }
             #endregion
 
-            Student s = await _SRepository.GetTByIdAsync(x => x.Id == id);
+            Student s = await _SRepository.GetTAsync(x => x.Id == id);
 
             //Student s = await _SRepository.DeleteStudentByIdAsync(id);
 
@@ -255,7 +256,7 @@ namespace CollegeApp.Controllers
 
              await _SRepository.SaveStudent(st);
            
-            var student = await _SRepository.GetTByNameAsync(z => z.Name == st.Name);
+            var student = await _SRepository.GetTAsync(z => z.Name == st.Name);
             //int id = student.Id;
 
             //return CreatedAtRoute("GetStudentDataById",id, sdt);
@@ -299,7 +300,7 @@ namespace CollegeApp.Controllers
             #endregion
             //Student sdt1 = await _db.Students.AsNoTracking().Where(x=>x.Id == sdt.Id).FirstOrDefaultAsync() ;
 
-            Student sdt1 = await _SRepository.GetTByIdAsync(x=>x.Id ==  sdt.Id,true);
+            Student sdt1 = await _SRepository.GetTAsync(x=>x.Id ==  sdt.Id,true);
 
 
 
@@ -370,7 +371,7 @@ namespace CollegeApp.Controllers
 
 
             #endregion
-            Student sdt1 = await _SRepository.GetTByIdAsync(x=>x.Id==id, true);
+            Student sdt1 = await _SRepository.GetTAsync(x=>x.Id==id, true);
             #region Not_Found_404
             if (sdt1 == null)
                 return NotFound();

@@ -54,7 +54,7 @@ namespace CollegeApp.Repository
         }
 
 
-        public async Task<T> GetTByIdAsync(Expression<Func<T,bool>> filter, bool TrackinFlag = false)
+        public async Task<T> GetTAsync(Expression<Func<T,bool>> filter, bool TrackinFlag = false)
         {
             if (TrackinFlag)
 
@@ -67,10 +67,10 @@ namespace CollegeApp.Repository
 
 
         }
-        public async Task<T> GetTByNameAsync(Expression<Func<T, bool>> filter)
-        {
-            return await _dbset.Where(filter).FirstOrDefaultAsync();
-        }
+        //public async Task<T> GetTByNameAsync(Expression<Func<T, bool>> filter)
+        //{
+        //    return await _dbset.Where(filter).FirstOrDefaultAsync();
+        //}
 
 
         public async Task<T> UpdateTAsync(T dbrecord)

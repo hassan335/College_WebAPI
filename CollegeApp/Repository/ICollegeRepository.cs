@@ -8,10 +8,10 @@ namespace CollegeApp.Repository
 
         Task<List<T>> GetAllTAsync();
 
-        Task<T> GetTByIdAsync(Expression<Func<T, bool>> filter, bool TrackingFlag = false);
+        Task<T> GetTAsync(Expression<Func<T, bool>> filter, bool TrackingFlag = false);
 
 
-        Task<T> GetTByNameAsync(Expression<Func<T, bool>> filter);
+        //Task<T> GetTByNameAsync(Expression<Func<T, bool>> filter);
 
 
 

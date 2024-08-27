@@ -27,6 +27,9 @@ namespace CollegeApp.Config
            });
 
 
+            builder.HasOne(x => x.Department).WithMany(x => x.Student).HasForeignKey(x => x.DepartmentId).HasConstraintName("FK_DepartmentId");
+
+
         }
 
 
