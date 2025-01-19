@@ -3,6 +3,8 @@ using CollegeApp.Data;
 using CollegeApp.Models;
 using CollegeApp.MyLogging;
 using CollegeApp.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,8 @@ namespace CollegeApp.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors(PolicyName= "AllowOnyCoogle")]
+    [Authorize (Roles ="Admin,SuperAdmin")]
     public class StudentController : ControllerBase
     {
         private readonly ILogger _logger;
@@ -37,6 +41,7 @@ namespace CollegeApp.Controllers
 
         }
 
+        [AllowAnonymous]
 
         [HttpGet("All", Name = "GetStudentData")]
         [ProducesResponseType(StatusCodes.Status200OK)]

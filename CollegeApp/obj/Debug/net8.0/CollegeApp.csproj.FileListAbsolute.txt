@@ -307,3 +307,4 @@ D:\Own_Learning\Web_API\College_WebAPI\CollegeApp\obj\Debug\net8.0\refint\Colleg
 D:\Own_Learning\Web_API\College_WebAPI\CollegeApp\obj\Debug\net8.0\CollegeApp.pdb
 D:\Own_Learning\Web_API\College_WebAPI\CollegeApp\obj\Debug\net8.0\CollegeApp.genruntimeconfig.cache
 D:\Own_Learning\Web_API\College_WebAPI\CollegeApp\obj\Debug\net8.0\ref\CollegeApp.dll
+D:\Own_Learning\Web_API\College_WebAPI\CollegeApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

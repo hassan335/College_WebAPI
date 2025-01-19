@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 using CollegeApp.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +42,27 @@ builder.Services.AddScoped<IMyLogger, LogToDB>();
 builder.Services.AddTransient<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped (typeof(ICollegeRepository<>)  , typeof(CollegeRepository<>));
 
+
+
+builder.Services.AddCors(x => {
+
+    x.AddDefaultPolicy( policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+
+    });
+    x.AddPolicy("AllowOnyCoogle", policy =>
+    {
+        policy.WithOrigins("https://google.com/").AllowAnyHeader().AllowAnyMethod();
+
+    });
+
+
+
+
+
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -52,8 +74,19 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.UseCors();
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(x =>
+{
+    x.MapGet("api/testendpoint2", y => y.Response.WriteAsync(builder.Configuration.GetValue<string>("SecretKey")));
+
+});
+
+
 
 app.Run();
