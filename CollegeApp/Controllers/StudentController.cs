@@ -15,7 +15,7 @@ namespace CollegeApp.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors(PolicyName= "AllowOnyCoogle")]
+    [EnableCors(PolicyName = "AllowOnyCoogle")]
     [Authorize (Roles ="Admin,SuperAdmin")]
     public class StudentController : ControllerBase
     {
@@ -80,6 +80,7 @@ namespace CollegeApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
+        [DisableCors]
         public async Task <ActionResult<StudentDTO>> GetStudentDataById(int id) /*<Student>*/
         {
             _logger.LogInformation("Get Student by id  Method is executing");

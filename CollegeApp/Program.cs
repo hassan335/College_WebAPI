@@ -44,16 +44,18 @@ builder.Services.AddScoped (typeof(ICollegeRepository<>)  , typeof(CollegeReposi
 
 
 
-builder.Services.AddCors(x => {
+builder.Services.AddCors(x =>
+{
 
-    x.AddDefaultPolicy( policy =>
-    {
+    x.AddDefaultPolicy(policy =>
+    {// Allow all origins
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 
     });
     x.AddPolicy("AllowOnyCoogle", policy =>
-    {
-        policy.WithOrigins("https://google.com/").AllowAnyHeader().AllowAnyMethod();
+    
+    {// Allow only google
+        policy.WithOrigins("https://google.com/", "http://localhost/CorsTest/CorsTest/New%20Text%20Document.html").AllowAnyHeader().AllowAnyMethod();
 
     });
 
@@ -75,8 +77,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.UseCors();
+
 app.UseRouting();
+app.UseCors("AllowOnyCoogle");
 app.UseAuthorization();
 
 app.MapControllers();
