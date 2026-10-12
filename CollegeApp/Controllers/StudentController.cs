@@ -41,11 +41,12 @@ namespace CollegeApp.Controllers
 
         }
 
-        [AllowAnonymous]
+        
 
         [HttpGet("All", Name = "GetStudentData")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //[AllowAnonymous]
         public async Task < ActionResult<IEnumerable<StudentDTO>>> GetStudentData()
         {
             #region ok_200
