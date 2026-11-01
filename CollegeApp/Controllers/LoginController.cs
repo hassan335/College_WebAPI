@@ -45,11 +45,11 @@ namespace CollegeApp.Controllers
                         // Username
                         new Claim(ClaimTypes.Name, model.Username),
                         // Role
-                        new Claim(ClaimTypes.Name, "Admin")
+                        new Claim(ClaimTypes.Role, "Admin")
 
 
                     }),
-                    Expires = DateTime.Now.AddHours(4),
+                    Expires = DateTime.UtcNow.AddHours(4),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512)
 
 

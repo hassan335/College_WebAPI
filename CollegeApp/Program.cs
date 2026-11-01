@@ -59,7 +59,7 @@ builder.Services.AddCors(x =>
     x.AddPolicy("AllowOnyCoogle", policy =>
     
     {// Allow only google
-        policy.WithOrigins("https://google.com/", "http://localhost/CorsTest/CorsTest/New%20Text%20Document.html").AllowAnyHeader().AllowAnyMethod();
+        policy.WithOrigins("https://google.com", "http://localhost").AllowAnyHeader().AllowAnyMethod();
 
     });
 

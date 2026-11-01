@@ -15,8 +15,9 @@ namespace CollegeApp.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors(PolicyName = "AllowOnyCoogle")]
-    [Authorize (Roles ="Admin,SuperAdmin")]
+    //[EnableCors(PolicyName = "AllowOnyCoogle")]
+    [Authorize(Roles = "Admin,SuperAdmin")]
+    //[Authorize(AuthenticationSchemes = "LoginForLocalUsers", Roles = "Superadmin,Admin")]
     public class StudentController : ControllerBase
     {
         private readonly ILogger _logger;
