@@ -12,7 +12,7 @@ namespace CollegeApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors(PolicyName = "AllowOnyCoogle")]
+    [EnableCors(PolicyName = "AllowOnlyGoogle")]
     [AllowAnonymous]
     public class LoginController : ControllerBase
     {
@@ -29,15 +29,34 @@ namespace CollegeApp.Controllers
         [HttpPost]
         public ActionResult Login(LoginDTO model)
         {
+            byte [] key = null;
             if (!ModelState.IsValid)
             {
                 return BadRequest("Please provide username and Passwoes");
             }
             LoginResponceDTO responce = new() { Username = model.Username };
+            if (model.Policy.Equals("Google"))
+            {
+                key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecretKeyForGoogle"));
+            }
+            else
+            {
+                key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecretKeyForMicrosoft"));
+            }
+
+
+
             if (model.Username == "Hassan" && model.Password == "Hsn123")
             {
-                var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("SecretKey"));
-                var TokenHandler = new JwtSecurityTokenHandler();
+                
+
+
+               
+
+
+
+
+                    var TokenHandler = new JwtSecurityTokenHandler();
                 var tokendescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new System.Security.Claims.ClaimsIdentity(new Claim[]

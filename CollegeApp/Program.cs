@@ -1,13 +1,14 @@
+using AutoMapper;
 using CollegeApp.AutoMapperConfig;
 using CollegeApp.Data;
 using CollegeApp.MyLogging;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using Microsoft.Extensions.DependencyInjection;
 using CollegeApp.Repository;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -45,6 +46,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IMyLogger, LogToDB>();
 builder.Services.AddTransient<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped (typeof(ICollegeRepository<>)  , typeof(CollegeRepository<>));
+var LoginKeyForGoogle = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKeyForGoogle"));
+var LoginKeyForMicrosoft = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKeyForMicrosoft"));
 
 
 
@@ -56,7 +59,7 @@ builder.Services.AddCors(x =>
         policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 
     });
-    x.AddPolicy("AllowOnyCoogle", policy =>
+    x.AddPolicy("AllowOnlyGoogle", policy =>
     
     {// Allow only google
         policy.WithOrigins("https://google.com", "http://localhost").AllowAnyHeader().AllowAnyMethod();
@@ -78,14 +81,31 @@ builder.Services.AddAuthentication(option =>
     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
 
-}).AddJwtBearer(option =>
+}).AddJwtBearer("LoginForGoogle", option =>
 {
     option.RequireHttpsMetadata = false;
     option.SaveToken = true;
     option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKey"))),
+        IssuerSigningKey = new SymmetricSecurityKey(LoginKeyForGoogle),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+
+    };
+
+
+
+
+
+}).AddJwtBearer("LoginForMicrosoft", option =>
+{
+    option.RequireHttpsMetadata = false;
+    option.SaveToken = true;
+    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(LoginKeyForMicrosoft),
         ValidateIssuer = false,
         ValidateAudience = false,
 
@@ -122,7 +142,7 @@ app.UseHttpsRedirection();
 
 
 app.UseRouting();
-app.UseCors("AllowOnyCoogle");
+app.UseCors("AllowOnlyGoogle");
 app.UseAuthorization();
 
 app.MapControllers();

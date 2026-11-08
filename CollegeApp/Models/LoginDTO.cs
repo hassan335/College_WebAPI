@@ -6,6 +6,9 @@ namespace CollegeApp.Models
     {
 
         [Required]
+        public string Policy { get; set; }
+
+        [Required]
         public string Username { get; set; }
 
 
