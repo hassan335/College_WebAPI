@@ -1,0 +1,15 @@
+2024-03-22 02:05:48,345 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Initialized DbCommand for 'ExecuteReader' (4ms).
+2024-03-22 02:05:48,351 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Executing DbCommand [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Size = 250)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Students] SET [Name] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+2024-03-22 02:05:48,356 [.NET TP Worker] INFO  Microsoft.EntityFrameworkCore.Database.Command - Executed DbCommand (5ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Size = 250)], CommandType='Text', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+UPDATE [Students] SET [Name] = @p0
+OUTPUT 1
+WHERE [Id] = @p1;
+2024-03-22 02:05:48,359 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - Closing data reader to 'CollegeDb' on server 'DESKTOP-LDJT2T6\SQLEXPRESS'.
+2024-03-22 02:05:48,361 [.NET TP Worker] DEBUG Microsoft.EntityFrameworkCore.Database.Command - A data reader for 'CollegeDb' on server 'DESKTOP-LDJT2T6\SQLEXPRESS' is being disposed after spending 2ms reading results.

@@ -1,0 +1,7 @@
+2024-03-20 02:12:10,041 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Transaction - Committed transaction.
+2024-03-20 02:12:10,044 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Transaction - Disposing transaction.
+2024-03-20 02:12:10,044 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Connection - Closing connection to database 'CollegeDb' on server 'DESKTOP-LDJT2T6\SQLEXPRESS'.
+2024-03-20 02:12:10,044 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Connection - Closed connection to database 'CollegeDb' on server 'DESKTOP-LDJT2T6\SQLEXPRESS' (0ms).
+2024-03-20 02:12:10,045 [1] DEBUG Microsoft.EntityFrameworkCore.Infrastructure - 'CollegeDbContext' disposed.
+2024-03-20 02:12:10,047 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Connection - Disposing connection to database 'CollegeDb' on server 'DESKTOP-LDJT2T6\SQLEXPRESS'.
+2024-03-20 02:12:10,047 [1] DEBUG Microsoft.EntityFrameworkCore.Database.Connection - Disposed connection to database '' on server '' (0ms).
