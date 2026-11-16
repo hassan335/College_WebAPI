@@ -1,0 +1,207 @@
+using AutoMapper;
+using CollegeApp.AutoMapperConfig;
+using CollegeApp.Data;
+using CollegeApp.MyLogging;
+using CollegeApp.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+
+//builder.Logging.ClearProviders();
+//builder.Logging.AddConsole();
+//builder.Logging.AddDebug();
+builder.Logging.AddLog4Net();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
+
+builder.Services.AddDbContext<CollegeDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("CollegeAppDbConnection")));
+
+#region Serilog Configuration
+//Log.Logger = new LoggerConfiguration().MinimumLevel.Information()
+//    .WriteTo.File("Log/log.txt", rollingInterval: RollingInterval.Minute)
+//    .CreateLogger();
+
+////builder.Host.UseSerilog(); // For serilog only and over ride in built loging
+//builder.Logging.AddSerilog(); // for both builten and Serilog
+#endregion
+
+
+
+
+// Add services to the container.
+
+builder.Services.AddControllers(options =>options.ReturnHttpNotAcceptable = true).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization heade using the bearer scheme. Enter Bearer [space] add your token in the text input. Ex: Bearer dkhjsbfjhdgvfjh",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Scheme = "Bearer"
+
+
+
+    });
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Id="Bearer",
+                    Type = ReferenceType.SecurityScheme
+
+
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            new  List <string>()
+        }
+    });
+
+
+
+});
+
+
+
+
+
+
+builder.Services.AddScoped<IMyLogger, LogToDB>();
+builder.Services.AddTransient<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped (typeof(ICollegeRepository<>)  , typeof(CollegeRepository<>));
+var LoginKeyForGoogle = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKeyForGoogle"));
+var LoginKeyForMicrosoft = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("SecretKeyForMicrosoft"));
+string GoogleAudience = builder.Configuration.GetValue<string>("GoogleAudience");
+string MicrosoftAudience = builder.Configuration.GetValue<string>("MicrosoftAudience");
+string MicrosoftIssuer = builder.Configuration.GetValue<string>("MicrosoftIssuer");
+string GoogleIssuer = builder.Configuration.GetValue<string>("GoogleIssuer");
+
+
+builder.Services.AddCors(x =>
+{
+
+    x.AddDefaultPolicy(policy =>
+    {// Allow all origins
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+
+    });
+    x.AddPolicy("AllowOnlyGoogle", policy =>
+    
+    {// Allow only google
+        policy.WithOrigins("https://google.com", "http://localhost").AllowAnyHeader().AllowAnyMethod();
+
+    });
+
+
+
+
+
+});
+
+
+#region JWT Authentication Configuration
+
+builder.Services.AddAuthentication(option =>
+{
+    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+
+}).AddJwtBearer("LoginForGoogle", option =>
+{
+    option.RequireHttpsMetadata = false;
+    option.SaveToken = true;
+    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(LoginKeyForGoogle),
+        ValidateIssuer = true,
+        ValidIssuer = GoogleIssuer,
+        ValidateAudience = true,
+        ValidAudience = GoogleAudience
+
+    };
+
+
+
+
+
+}).AddJwtBearer("LoginForMicrosoft", option =>
+{
+    option.RequireHttpsMetadata = false;
+    option.SaveToken = true;
+    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(LoginKeyForMicrosoft),
+        ValidateIssuer = true,
+        ValidIssuer = MicrosoftIssuer,
+        ValidateAudience = true,
+        ValidAudience = MicrosoftAudience
+
+    };
+
+
+
+
+
+});
+
+
+
+
+#endregion
+
+var app = builder.Build();
+
+
+
+
+
+
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+
+
+app.UseRouting();
+app.UseCors("AllowOnlyGoogle");
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.UseEndpoints(x =>
+{
+    x.MapGet("api/testendpoint2", y => y.Response.WriteAsync(builder.Configuration.GetValue<string>("SecretKey")));
+
+});
+
+
+
+app.Run();
